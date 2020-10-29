@@ -1,4 +1,4 @@
-import { ui } from './references.js';
+import { ui, searchObj, cryptocurrency, currency } from './references.js';
 
 // FUNCTIONS
 // Obtiene las criptomonedas
@@ -16,10 +16,18 @@ const consultCryptocurrency = () => {
         .then( cryptocurrencies => ui.fillCryptocurrency( cryptocurrencies ) );
 }
 
+// Obtiene los valores de los inputs
+const obtainValues = event => {
+    searchObj[ event.target.name ] = event.target.value;
+}
 
 // EVENTS
 const startEventListeners = () => {
     document.addEventListener( 'DOMContentLoaded', consultCryptocurrency );
+
+    cryptocurrency.addEventListener( 'change', obtainValues );
+
+    currency.addEventListener( 'change', obtainValues );
 }
 
 export {
