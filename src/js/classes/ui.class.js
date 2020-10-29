@@ -59,6 +59,20 @@ class UI {
         result.appendChild( lastUpdate );
     }
 
+    showSpinner() {
+        this.cleanHTML();
+
+        const divSpinner = document.createElement( 'div' );
+        divSpinner.classList.add( 'spinner' );
+        divSpinner.innerHTML = `
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        `;
+
+        result.appendChild( divSpinner );
+    }
+
     cleanHTML() {
         while( result.firstChild ) {
             result.removeChild( result.firstChild );
