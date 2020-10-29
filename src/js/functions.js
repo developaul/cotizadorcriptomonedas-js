@@ -23,6 +23,8 @@ const obtainValues = event => {
 
 // Consulta la API
 const consultAPI = () =>  {
+    ui.showSpinner();
+
     const { moneda, criptomoneda } = searchObj;
 
     const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${ criptomoneda }&tsyms=${ moneda }`;
