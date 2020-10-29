@@ -1,4 +1,4 @@
-import { cryptocurrency } from "../references";
+import { cryptocurrency, result } from "../references";
 
 class UI {
 
@@ -12,6 +12,21 @@ class UI {
 
             cryptocurrency.appendChild( option );
         });
+    }
+
+    showError( message ) {
+        const existAlert = document.querySelector( '.error' );
+
+        if( !existAlert ) {
+            const divMessage = document.createElement( 'div' );
+            divMessage.classList.add( 'error' );
+            divMessage.textContent = message;
+
+            result.appendChild( divMessage );
+            setTimeout( () => {
+                divMessage.remove();
+            }, 3000 );
+        }
     }
 
 }
