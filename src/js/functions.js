@@ -21,6 +21,17 @@ const obtainValues = event => {
     searchObj[ event.target.name ] = event.target.value;
 }
 
+// Consulta la API
+const consultAPI = () =>  {
+    const { moneda, criptomoneda } = searchObj;
+
+    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${ criptomoneda }&tsyms=${ moneda }`;
+
+    fetch( url )
+        .then( response => response.json() )
+        .then( result => { ui.showCotizationHTML( result.DISPLAY[ criptomoneda ][ moneda ] ); } );
+}
+
 // Valida el formulario
 const validateForm = event => {
     event.preventDefault();
@@ -31,6 +42,8 @@ const validateForm = event => {
         ui.showError( 'Ambos campos son obligatorios' );
         return;
     }
+
+    consultAPI();
 }
 
 // EVENTS
