@@ -1,4 +1,4 @@
-import { ui, searchObj, cryptocurrency, currency } from './references.js';
+import { ui, searchObj, cryptocurrency, currency, form } from './references.js';
 
 // FUNCTIONS
 // Obtiene las criptomonedas
@@ -21,6 +21,18 @@ const obtainValues = event => {
     searchObj[ event.target.name ] = event.target.value;
 }
 
+// Valida el formulario
+const validateForm = event => {
+    event.preventDefault();
+
+    const { moneda, criptomoneda } = searchObj;
+
+    if( moneda === '' || criptomoneda === '' ) {
+        ui.showError( 'Ambos campos son obligatorios' );
+        return;
+    }
+}
+
 // EVENTS
 const startEventListeners = () => {
     document.addEventListener( 'DOMContentLoaded', consultCryptocurrency );
@@ -28,6 +40,8 @@ const startEventListeners = () => {
     cryptocurrency.addEventListener( 'change', obtainValues );
 
     currency.addEventListener( 'change', obtainValues );
+
+    form.addEventListener( 'submit', validateForm );
 }
 
 export {
