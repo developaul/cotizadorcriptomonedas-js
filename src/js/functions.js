@@ -1,4 +1,4 @@
-import { ui } from './references.js';
+import { ui, searchObj, cryptocurrency, currency, form } from './references.js';
 
 // FUNCTIONS
 // Obtiene las criptomonedas
@@ -16,10 +16,45 @@ const consultCryptocurrency = () => {
         .then( cryptocurrencies => ui.fillCryptocurrency( cryptocurrencies ) );
 }
 
+// Obtiene los valores de los inputs
+const obtainValues = event => {
+    searchObj[ event.target.name ] = event.target.value;
+}
+
+// Consulta la API
+const consultAPI = () =>  {
+    const { moneda, criptomoneda } = searchObj;
+
+    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${ criptomoneda }&tsyms=${ moneda }`;
+
+    fetch( url )
+        .then( response => response.json() )
+        .then( result => { ui.showCotizationHTML( result.DISPLAY[ criptomoneda ][ moneda ] ); } );
+}
+
+// Valida el formulario
+const validateForm = event => {
+    event.preventDefault();
+
+    const { moneda, criptomoneda } = searchObj;
+
+    if( moneda === '' || criptomoneda === '' ) {
+        ui.showError( 'Ambos campos son obligatorios' );
+        return;
+    }
+
+    consultAPI();
+}
 
 // EVENTS
 const startEventListeners = () => {
     document.addEventListener( 'DOMContentLoaded', consultCryptocurrency );
+
+    cryptocurrency.addEventListener( 'change', obtainValues );
+
+    currency.addEventListener( 'change', obtainValues );
+
+    form.addEventListener( 'submit', validateForm );
 }
 
 export {

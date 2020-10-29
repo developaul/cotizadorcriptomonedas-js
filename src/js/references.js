@@ -8,3 +8,9 @@ export const form              = document.querySelector( '#formulario' ),
 
 // Instances
 export const ui = new UI();
+
+// Constants
+export const searchObj = {
+    moneda: '',
+    criptomoneda: ''
+}
