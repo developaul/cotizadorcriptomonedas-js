@@ -7,13 +7,18 @@ const obtainCryptocurrency = cryptocurrencies => new Promise( resolve => {
 });
 
 // Llena el selector de criptomonedas con las 10 criptomonedas más top del momento.
-const consultCryptocurrency = () => {
+const consultCryptocurrency = async () => {
     const url = `https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD`;
 
-    fetch( url )
-        .then( response => response.json() )
-        .then( result => obtainCryptocurrency( result.Data ) )
-        .then( cryptocurrencies => ui.fillCryptocurrency( cryptocurrencies ) );
+    try {
+        const response          = await fetch( url );
+        const result            = await response.json();
+        const cryptocurrencies  = await obtainCryptocurrency( result.Data );
+
+        ui.fillCryptocurrency( cryptocurrencies );
+    } catch( error ) {
+        ui.showError( 'No se pudo descargar las últimas 10 criptomonedas, intente de nuevo' );
+    }
 }
 
 // Obtiene los valores de los inputs
@@ -22,16 +27,21 @@ const obtainValues = event => {
 }
 
 // Consulta la API
-const consultAPI = () =>  {
+const consultAPI = async () =>  {
     ui.showSpinner();
 
     const { moneda, criptomoneda } = searchObj;
 
     const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${ criptomoneda }&tsyms=${ moneda }`;
 
-    fetch( url )
-        .then( response => response.json() )
-        .then( result => { ui.showCotizationHTML( result.DISPLAY[ criptomoneda ][ moneda ] ); } );
+    try {
+        const response  = await fetch( url );
+        const result    = await response.json();
+        
+        ui.showCotizationHTML( result.DISPLAY[ criptomoneda ][ moneda ] );
+    } catch( error ) {
+        ui.showError( 'No se pudo realizar la cotización, Intente de nuevo' );
+    }
 }
 
 // Valida el formulario
